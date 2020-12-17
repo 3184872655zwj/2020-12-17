@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Symbol 做唯一标记,独一无二
+        let a = Symbol("aaa");
+        let b = Symbol("aaa");
+        console.log(a==b); // 不相等 false
+
+        let c = Symbol(111);
+        let d = Symbol(111);
+        console.log(c==d); // 不相等 false
+
+
+        // Symbol作为属性名称的时候，不可以被枚举(循环)
+        // 对象属性名称可以动态
+        let signer = "name";
+        let symS = Symbol(); // 唯一标记变量
+        let symY = Symbol("abc"); // 唯一标记变量
+        var obj = {
+            [signer]:"英特威", // signer变量 作为对象的属性名称，属性名称可以用动态变量
+            age:22,
+            [symS]:1000 ,//sysbol的动态属性
+            [symY]:2000 //sysbol的动态属性
+        }
+        console.log(obj.name , obj[symS] ,obj[signer] ,obj.symS ,obj.symY ,obj[symY]); 
+        //英特威 1000 英特威 undefined undefined 2000
+
+
+
+        // Symbol.for() 函数
+        // 用相同名字通过for函数创建symbol 可以相等
+        let nnn = Symbol.for("3333");
+        let mmm = Symbol.for("3333");
+        console.log( nnn===mmm); // 相等 true
+
+        let ddd = Symbol.for("3333");
+        let ggg = Symbol.for("1111");
+        console.log( ddd===ggg); // 不相等 false
+
+
+        // Symbol.keyFor(); 返回描述key
+        let fff = Symbol("ccc");
+        let eee = Symbol.for("ccc");
+        console.log(Symbol.keyFor(fff));//undefined
+        console.log(Symbol.keyFor(eee));//ccc
+
+        
+        let qqq = Symbol.for("name");
+        let ppp = Symbol.for("name");
+        let obj2 = {
+            [qqq]:"李四",
+            [ppp]:"王五", //覆盖前面的李四
+        }
+        console.log(obj2); //{Symbol(name): "王五"}
+    </script>
+</body>
+</html>

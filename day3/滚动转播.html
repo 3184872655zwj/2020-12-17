@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            overflow: hidden;
+        }
+
+        .box {
+            position: relative;
+        }
+        .box >div {
+           line-height: 500px;
+           text-align: center;
+           font-size: 50px;
+           position: relative;
+        }
+        .box >div >div{
+            position: absolute;
+            top:50px;
+            left: -444px;
+        }
+
+        .one {
+            background: rebeccapurple;
+        }
+
+        .two {
+            background: green;
+        }
+
+        .three {
+            background: orange;
+        }
+        .four {
+            background: pink;
+        }
+        /* 高亮 */
+        .led{
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            width: 50px;
+            height: 200px;
+            background: white;
+            transform: translateY(-50%);
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0px 0px 5px 1px#ccc;
+        }
+        .led ul{
+            list-style: none;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .led ul li{
+            flex: 1;
+            line-height: 50px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .active{
+            background: red;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 转播 -->
+    <div class="box">
+        <div class="one ff">第一页
+            <div>111111111111111</div>
+        </div>
+        <div class="two ff">第二页
+            <div>222222222222222</div>
+        </div>
+        <div class="three ff">第三页
+            <div>333333333333333</div>
+        </div>
+        <div class="four ff">第四页
+            <div>44444444444444</div>
+        </div>
+    </div>
+
+    <!-- 侧边高亮 -->
+    <div class="led">
+        <ul>
+            <li class="active">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+    </div>
+
+    <script src="./jquery-3.5.1.min.js"></script>
+    <script>
+        // 获取页面高度
+        var h = $(document).height();
+        // 设置所有转播面和页面高度一样
+        $(".box .ff").css("height", h);
+
+        var numer = 0;
+        var timer = null;
+        var num = false ;
+        document.addEventListener("mousewheel", function (e) {
+
+            timer = setTimeout(function(){
+
+                // 判断鼠标上下滚动的方向
+                if (e.wheelDelta >0 || num == false) {
+                    numer++;
+                    numer = numer > $(".box>div").length -1 ? $(".box>div").length - 1 : numer;
+                    console.log("鼠标向上滚动");
+                    num = true;
+
+                } else if(e.wheelDelta < 0 || num == false) {
+                    numer--;
+                    numer = numer < 0 ? 0 : numer;
+                    console.log("鼠标向下滚动");
+                    num = true;
+
+                }
+
+                // 设置box的位置
+                $(".box").stop().animate({
+                    top: -(numer * h) + "px"
+                }, 500 ,function(){
+                    num = false;
+                }); 
+                
+                $(".led ul li").eq(numer).addClass("active").siblings().removeClass("active");
+
+            }, 500)
+                
+        });
+
+
+    </script>
+</body>
+
+</html>
